@@ -8,6 +8,7 @@ const colors = require('colors');
 const globule = require('globule');
 const argv = require('optimist').argv;
 const { mdRegex, processFiles } = require('./lib/process');
+let aborted = false;
 
 const files = globule.find(`${cwd}/*.md`);
 
@@ -17,18 +18,22 @@ if (files.length) {
 }
 
 process.on('SIGINT', function() {
+  aborted = true;
   process.exit(0);
 });
 
 process.on('SIGTERM', function() {
+  aborted = true;
   process.exit(0);
 });
 
 (async () => {
   if (argv.w || argv.watch) {
     process.on('exit', function() {
-      console.log('');
-      console.log(`stop watching ${cwd}`.yellow);
+      if (aborted) {
+        console.log('');
+        console.log(`stop watching files`.yellow);
+      }
     });
 
     console.log(`start watching ${cwd}`.yellow);
@@ -45,8 +50,10 @@ process.on('SIGTERM', function() {
   }
   else {
     process.on('exit', function() {
-      console.log('');
-      console.log(`stop processing ${cwd}`.yellow);
+      if (aborted) {
+        console.log('');
+        console.log(`stop processing files`.yellow);
+      }
     });
 
     console.log(`start processing ${cwd}`.yellow);

@@ -7,8 +7,10 @@ const fs = require('fs');
 const colors = require('colors');
 const globule = require('globule');
 const argv = require('optimist').argv;
+const opn = require('opn');
 const pkg = require('./package.json');
 const { mdRegex, processFiles } = require('./lib/process');
+const serve = require('./lib/serve');
 let aborted = false;
 
 let bannerVersion = `${pkg.name} v${pkg.version}`;
@@ -63,7 +65,9 @@ process.on('SIGTERM', function() {
       }
     });
 
+    const {url, port} = await serve();
     console.log(`start watching files`.yellow);
+    console.log(`serving files at ${url}`.yellow.dim);
     for (let file of files) {
       await processFiles(file, false);
     }
@@ -74,6 +78,19 @@ process.on('SIGTERM', function() {
         await processFiles(file, false);
       }
     });
+    opn(url);
+  }
+  else if (argv.s || argv.serve) {
+    process.on('exit', function() {
+      if (aborted) {
+        console.log('');
+        console.log(`stop serving files`.yellow);
+      }
+    });
+
+    const {url, port} = await serve();
+    console.log(`start serving files at ${url}`.yellow);
+    opn(url);
   }
   else {
     process.on('exit', function() {

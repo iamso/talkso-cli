@@ -36,7 +36,7 @@ process.on('SIGTERM', function() {
       }
     });
 
-    console.log(`start watching ${cwd}`.yellow);
+    console.log(`start watching files`.yellow);
     for (let file of files) {
       await processFiles(file, false);
     }
@@ -56,10 +56,10 @@ process.on('SIGTERM', function() {
       }
     });
 
-    console.log(`start processing ${cwd}`.yellow);
+    console.log(`start processing files`.yellow);
     for (let file of files) {
       await processFiles(file);
     }
-    console.log(`finish processing ${cwd}`.green);
+    console.log(`finish processing files`.yellow);
   }
 })();

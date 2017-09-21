@@ -21,6 +21,16 @@ Your system must meet the following requirements:
 
 Create a markdown file, see the [example](example.md) for help.
 
+### Example
+
+Create an example markdown file, showing all the possible options:
+
+```bash
+talkso -e
+# or
+talkso --example
+```
+
 ### Watch
 
 Run the following command from the markdown files directory:
@@ -31,7 +41,31 @@ talkso -w
 talkso --watch
 ```
 
-The watch command copys the necessary css- and js-files to the directory and creates the html file(s);
+The watch command copys the necessary css- and js-files to the directory and creates the html file(s). It also starts the server, see [Serve](#serve).
+
+### Serve
+
+Run the following command to start the server:
+
+```bash
+talkso -s
+# or
+talkso --serve
+```
+
+The serve command starts an express server. The port can be specified with the following commands:
+
+```bash
+PORT=7000 talkso -s
+# or
+talkso -s -p 7000
+# or
+talkso -s --port 7000
+```
+
+If no port is specified, the default port 8000 is used.
+
+*NOTE: The port can also be passed in with the watch command.*
 
 ### Build
 
@@ -41,7 +75,7 @@ Run the following command from the markdown files directory:
 talkso
 ```
 
-The build command copys the necessary css- and js-files to the directory and creates the html file(s);
+The build command copys the necessary css- and js-files to the directory and creates the html file(s).
 
 ## License
 

@@ -10,6 +10,12 @@ const argv = require('optimist').argv;
 const { mdRegex, processFiles } = require('./lib/process');
 let aborted = false;
 
+if (argv.e || argv.example) {
+  fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
+  console.log(`created example.md`.yellow);
+  return;
+}
+
 const files = globule.find(`${cwd}/*.md`);
 
 if (files.length) {

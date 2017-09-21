@@ -6,7 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const colors = require('colors');
 const globule = require('globule');
-const nodemon = require('nodemon');
 const argv = require('optimist').argv;
 const md = require('motes-md')({
   containers: [

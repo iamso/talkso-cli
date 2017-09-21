@@ -1,16 +1,47 @@
 # talkso-cli
 
+CLI to create **talkso** presentations from markdown files.
+
+[Read more about talkso](https://github.com/iamso/talkso).
+
 ## Install
 
 ```bash
 npm i -g talkso-cli
 ```
 
+## Requirements
+
+Your system must meet the following requirements:
+
+- Node >= 7.6.0
+- ImageMagick CLI
+
 ## Usage
 
-Create a markdown file, see the [example](example.md).
+Create a markdown file, see the [example](example.md) for help.
 
-Then navigate to that files directory in terminal and run `talkso`.
+### Watch
+
+Run the following command from the markdown files directory:
+
+```bash
+talkso -w
+# or
+talkso --watch
+```
+
+The watch command copys the necessary css- and js-files to the directory and creates the html file(s);
+
+### Build
+
+Run the following command from the markdown files directory:
+
+```bash
+talkso
+```
+
+The build command copys the necessary css- and js-files to the directory and creates the html file(s);
 
 ## License
 

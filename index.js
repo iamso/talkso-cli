@@ -7,8 +7,29 @@ const fs = require('fs');
 const colors = require('colors');
 const globule = require('globule');
 const argv = require('optimist').argv;
+const pkg = require('./package.json');
 const { mdRegex, processFiles } = require('./lib/process');
 let aborted = false;
+
+let bannerVersion = `${pkg.name} v${pkg.version}`;
+let bannerWidth = 38;
+let banner = `
+ ----------------------------------------
+| ====================================== |
+| ==============  ==  ================== |
+| ==============  ==  ================== |
+| ==  ==========  ==  ================== |
+| =    ===   ===  ==  =  ===   ====   == |
+| ==  ===  =  ==  ==    ===  =  ==  =  = |
+| ==  ======  ==  ==   =====  ====  =  = |
+| ==  ====    ==  ==    =====  ===  =  = |
+| ==  ===  =  ==  ==  =  ==  =  ==  =  = |
+| ==   ===    ==  ==  =  ===   ====   == |
+| ====================================== |
+| ${' '.repeat(bannerWidth - bannerVersion.length)}${bannerVersion} |
+ ${'-'.repeat(bannerWidth + 2)}
+`;
+console.log(banner);
 
 if (argv.e || argv.example) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));

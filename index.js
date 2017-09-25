@@ -9,7 +9,7 @@ const globule = require('globule');
 const argv = require('optimist').argv;
 const opn = require('opn');
 const pkg = require('./package.json');
-const { mdRegex, processFiles } = require('./lib/process');
+const { mdRegex, processFiles, clearTemp } = require('./lib/process');
 const serve = require('./lib/serve');
 let aborted = false;
 
@@ -96,6 +96,10 @@ process.on('SIGTERM', function() {
     process.on('exit', function() {
       if (aborted) {
         console.log('');
+        console.log(`→ clear temp files`.bold);
+        for (let file of files) {
+          clearTemp(file);
+        }
         console.log(`stop processing files`.yellow);
       }
     });

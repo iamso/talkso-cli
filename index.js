@@ -44,8 +44,7 @@ if (argv.e || argv.example || hasOption('example')) {
 const files = globule.find(`${cwd}/*.md`);
 
 if (files.length) {
-  fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
-  fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
+  copyClient();
 }
 
 process.on('SIGINT', function() {
@@ -113,3 +112,8 @@ process.on('SIGTERM', function() {
     console.log(`finish processing files`.yellow);
   }
 })();
+
+function copyClient() {
+  fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
+  fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
+}

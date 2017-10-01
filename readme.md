@@ -29,6 +29,8 @@ Create an example markdown file, showing all the possible options:
 talkso -e
 # or
 talkso --example
+# or
+talkso example
 ```
 
 ### Watch
@@ -39,6 +41,8 @@ Run the following command from the markdown files directory:
 talkso -w
 # or
 talkso --watch
+# or
+talkso watch
 ```
 
 The watch command copys the necessary css- and js-files to the directory and creates the html file(s). It also starts the server, see [Serve](#serve).
@@ -51,6 +55,8 @@ Run the following command to start the server:
 talkso -s
 # or
 talkso --serve
+# or
+talkso serve
 ```
 
 The serve command starts an express server. The port can be specified with the following commands:
@@ -75,7 +81,43 @@ Run the following command from the markdown files directory:
 talkso
 ```
 
-The build command copys the necessary css- and js-files to the directory and creates the html file(s).
+The build command copys the necessary css- and js-files to the directory and creates the html file(s). Additionally a PDF with screenshots is created.
+
+#### No PDF
+
+Run the following command to skip the PDF creation:
+
+```bash
+talkso --no-pdf
+# or
+talkso no-pdf
+```
+
+*NOTE: This is a lot faster, since it doesn't have to create all the screenshots.*
+
+#### Create a Zip
+
+Run the following command to create a Zip file during the build:
+
+```bash
+talkso -z
+# or
+talkso --zip
+# or
+talkso zip
+```
+
+#### Create a deployable directory
+
+Run the following command to create a deployable directory during the build:
+
+```bash
+talkso -d
+# or
+talkso --deploy
+# or
+talkso deploy
+```
 
 ## License
 

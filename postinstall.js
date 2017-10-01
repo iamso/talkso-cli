@@ -11,7 +11,7 @@ const files = [
 const dir = `${__dirname}/client`;
 const dirName = path.basename(dir);
 
-const frames = ['—', '\\', '|', '/'];
+const { spinnerFrames } = require('./lib/process');
 let i = 0;
 
 (async () => {
@@ -21,7 +21,7 @@ let i = 0;
   }
 
   let logInterval = setInterval(() => {
-    const frame = frames[i = ++i % frames.length];
+    const frame = spinnerFrames[i = ++i % spinnerFrames.length];
     logUpdate(`${frame} updating client`.bold);
   }, 100);
 

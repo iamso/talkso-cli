@@ -11,6 +11,7 @@ const opn = require('opn');
 const pkg = require('./package.json');
 const { mdRegex, processFiles, clearTemp } = require('./lib/process');
 const serve = require('./lib/serve');
+const hasOption = option => argv._.indexOf(option) > -1;
 let aborted = false;
 
 let bannerVersion = `${pkg.name} v${pkg.version}`;
@@ -33,7 +34,7 @@ let banner = `
 `;
 console.log(banner);
 
-if (argv.e || argv.example) {
+if (argv.e || argv.example || hasOption('example')) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
   console.log(`created example.md`.yellow);
   return;
@@ -57,7 +58,7 @@ process.on('SIGTERM', function() {
 });
 
 (async () => {
-  if (argv.w || argv.watch) {
+  if (argv.w || argv.watch || hasOption('watch')) {
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -80,7 +81,7 @@ process.on('SIGTERM', function() {
     });
     opn(url);
   }
-  else if (argv.s || argv.serve) {
+  else if (argv.s || argv.serve || hasOption('serve')) {
     process.on('exit', function() {
       if (aborted) {
         console.log('');

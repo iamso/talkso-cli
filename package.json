@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/iamso/talkso-cli#readme",
   "dependencies": {
+    "archiver": "^2.0.3",
     "colors": "^1.1.2",
     "ejs": "^2.5.7",
     "express": "^4.15.4",
@@ -42,6 +43,7 @@
     "puppeteer": "^0.10.2",
     "rimraf": "^2.6.2",
     "serve-index": "^1.9.0",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.7.8",
+    "slug": "^0.9.1"
   }
 }

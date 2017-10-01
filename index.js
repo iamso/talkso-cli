@@ -11,6 +11,7 @@ const opn = require('opn');
 const pkg = require('./package.json');
 const { mdRegex, processFiles, clearTemp } = require('./lib/process');
 const serve = require('./lib/serve');
+const { runScript } = require('./lib/utils');
 const hasOption = option => argv._.indexOf(option) > -1;
 let aborted = false;
 
@@ -38,6 +39,17 @@ console.log(banner);
 if (argv.e || argv.example || hasOption('example')) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
   console.log(`created example.md`.yellow);
+  return;
+}
+
+if (argv.u || argv.update || hasOption('update')) {
+  console.log(`start updating cilent`.yellow);
+  runScript(`${__dirname}/postinstall.js`).then(e => {
+    if (fs.existsSync(`${cwd}/talkso.css`) && fs.existsSync(`${cwd}/talkso.js`)) {
+      copyClient();
+    }
+    console.log(`finish updating cilent`.yellow);
+  }).catch(console.error);
   return;
 }
 

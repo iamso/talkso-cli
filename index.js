@@ -31,6 +31,7 @@ let banner = `
 | ====================================== |
 | ${' '.repeat(bannerWidth - bannerVersion.length)}${bannerVersion} |
  ${'-'.repeat(bannerWidth + 2)}
+ ${'https://github.com/iamso/talkso-cli'.dim}
 `;
 console.log(banner);
 

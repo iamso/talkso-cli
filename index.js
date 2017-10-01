@@ -106,6 +106,10 @@ process.on('SIGTERM', function() {
     opn(url);
   }
   else {
+    const zip = argv.z || argv.zip || hasOption('zip');
+    const deploy = argv.d || argv.deploy || hasOption('deploy');
+    let pdf = argv.p || argv.pdf;
+    pdf = pdf !== undefined ? pdf : hasOption('no-pdf') ? false : true;
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -119,7 +123,7 @@ process.on('SIGTERM', function() {
 
     console.log(`start processing files`.yellow);
     for (let file of files) {
-      await processFiles(file);
+      await processFiles(file, pdf, zip, deploy);
     }
     console.log(`finish processing files`.yellow);
   }

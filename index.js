@@ -78,7 +78,7 @@ process.on('SIGTERM', function() {
       }
     });
 
-    const {url, port} = await serve();
+    const {url, port, reloadServer} = await serve(true);
     console.log(`start watching files`.yellow);
     console.log(`serving files at ${url}`.yellow.dim);
     for (let file of files) {
@@ -89,6 +89,7 @@ process.on('SIGTERM', function() {
         const mdFile = path.basename(file);
         console.log(`${mdFile} changed`.yellow);
         await processFiles(file, false);
+        reloadServer.reload();
       }
     });
     opn(url);

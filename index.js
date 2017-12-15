@@ -12,7 +12,6 @@ const pkg = require('./package.json');
 const { mdRegex, processFiles, clearTemp } = require('./lib/process');
 const serve = require('./lib/serve');
 const { runScript } = require('./lib/utils');
-const hasOption = option => argv._.indexOf(option) > -1;
 let aborted = false;
 
 let bannerVersion = `${pkg.name} v${pkg.version}`;
@@ -36,13 +35,13 @@ let banner = `
 `;
 console.log(banner);
 
-if (argv.e || argv.example || hasOption('example')) {
+if (hasOption('example')) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
   console.log(`created example.md`.yellow);
   return;
 }
 
-if (argv.u || argv.update || hasOption('update')) {
+if (hasOption('update')) {
   console.log(`start updating cilent`.yellow);
   runScript(`${__dirname}/postinstall.js`).then(e => {
     if (fs.existsSync(`${cwd}/talkso.css`) && fs.existsSync(`${cwd}/talkso.js`)) {
@@ -70,7 +69,7 @@ process.on('SIGTERM', function() {
 });
 
 (async () => {
-  if (argv.w || argv.watch || hasOption('watch')) {
+  if (hasOption('watch')) {
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -94,7 +93,7 @@ process.on('SIGTERM', function() {
     });
     opn(url);
   }
-  else if (argv.s || argv.serve || hasOption('serve')) {
+  else if (hasOption('serve')) {
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -107,10 +106,9 @@ process.on('SIGTERM', function() {
     opn(url);
   }
   else {
-    const zip = argv.z || argv.zip || hasOption('zip');
-    const deploy = argv.d || argv.deploy || hasOption('deploy');
-    let pdf = argv.p || argv.pdf;
-    pdf = pdf !== undefined ? pdf : hasOption('no-pdf') ? false : true;
+    const zip = hasOption('zip');
+    const deploy = hasOption('deploy');
+    const pdf = hasOption('pdf');
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -129,6 +127,10 @@ process.on('SIGTERM', function() {
     console.log(`finish processing files`.yellow);
   }
 })();
+
+function hasOption(option) {
+  return argv[option.substr(0,1)] || argv[option] || argv._.indexOf(option) > -1;
+}
 
 function copyClient() {
   fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));

@@ -2,6 +2,11 @@
 
 const pkg = require('./package.json');
 const colors = require('colors');
+const argv = require('optimist').argv;
+
+const hasOption = (option) => {
+  return argv[option.substr(0,1)] || argv[option] || argv._.indexOf(option) > -1;
+}
 
 let bannerVersion = `${pkg.name} v${pkg.version}`;
 let bannerWidth = 38;
@@ -24,18 +29,6 @@ let banner = `
 `;
 console.log(banner);
 
-const sh = require("shelljs");
-const cwd = sh.pwd().toString();
-const path = require('path');
-const fs = require('fs');
-const globule = require('globule');
-const argv = require('optimist').argv;
-const opn = require('opn');
-const { mdRegex, processFiles, clearTemp } = require('./lib/process');
-const serve = require('./lib/serve');
-const { runScript } = require('./lib/utils');
-let aborted = false;
-
 if (hasOption('help')) {
   console.log(`${'usage:'.yellow}
 if no argument is passed, it will process the .md files and create HTML output.
@@ -52,10 +45,21 @@ ${'-h, --help'.bold}      show this helpful information
   return;
 }
 
+const sh = require("shelljs");
+const cwd = sh.pwd().toString();
+const path = require('path');
+const fs = require('fs');
+
 if (hasOption('example')) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
   console.log(`created example.md`.yellow);
   return;
+}
+
+const { runScript } = require('./lib/utils');
+const copyClient = () => {
+  fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
+  fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
 }
 
 if (hasOption('update')) {
@@ -68,6 +72,12 @@ if (hasOption('update')) {
   }).catch(console.error);
   return;
 }
+
+const globule = require('globule');
+const opn = require('opn');
+const { mdRegex, processFiles, clearTemp } = require('./lib/process');
+const serve = require('./lib/serve');
+let aborted = false;
 
 const files = globule.find(`${cwd}/*.md`);
 
@@ -144,12 +154,3 @@ process.on('SIGTERM', function() {
     console.log(`finish processing files`.yellow);
   }
 })();
-
-function hasOption(option) {
-  return argv[option.substr(0,1)] || argv[option] || argv._.indexOf(option) > -1;
-}
-
-function copyClient() {
-  fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
-  fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
-}

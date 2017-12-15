@@ -35,6 +35,22 @@ let banner = `
 `;
 console.log(banner);
 
+if (hasOption('help')) {
+  console.log(`${'usage:'.yellow}
+if no argument is passed, it will process the .md files and create HTML output.
+
+${'-e, --example'.bold}   create example.md
+${'-u, --update'.bold}    update the client files
+${'-w, --watch'.bold}     start watching .md files
+${'-s, --serve'.bold}     start serving the files
+${'-z, --zip'.bold}       create a zip file ${'(only if not watching or serving)'.dim}
+${'-d, --deploy'.bold}    create folder for deployment ${'(only if not watching or serving)'.dim}
+${'-p, --pdf'.bold}       create pdf from screenshots ${'(only if not watching or serving)'.dim}
+${'-h, --help'.bold}      show this helpful information
+`);
+  return;
+}
+
 if (hasOption('example')) {
   fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
   console.log(`created example.md`.yellow);

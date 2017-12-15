@@ -29,6 +29,10 @@ let banner = `
 `;
 console.log(banner);
 
+if (hasOption('version')) {
+  return;
+}
+
 if (hasOption('help')) {
   console.log(`${'usage:'.yellow}
 if no argument is passed, it will process the .md files and create HTML output.
@@ -40,6 +44,7 @@ ${'-s, --serve'.bold}     start serving the files
 ${'-z, --zip'.bold}       create a zip file ${'(only if not watching or serving)'.dim}
 ${'-d, --deploy'.bold}    create folder for deployment ${'(only if not watching or serving)'.dim}
 ${'-p, --pdf'.bold}       create pdf from screenshots ${'(only if not watching or serving)'.dim}
+${'-v, --version'.bold}   show the version ot talkso-cli
 ${'-h, --help'.bold}      show this helpful information
 `);
   return;

@@ -1,18 +1,7 @@
 #! /usr/bin/env node
 
-const sh = require("shelljs");
-const cwd = sh.pwd().toString();
-const path = require('path');
-const fs = require('fs');
-const colors = require('colors');
-const globule = require('globule');
-const argv = require('optimist').argv;
-const opn = require('opn');
 const pkg = require('./package.json');
-const { mdRegex, processFiles, clearTemp } = require('./lib/process');
-const serve = require('./lib/serve');
-const { runScript } = require('./lib/utils');
-let aborted = false;
+const colors = require('colors');
 
 let bannerVersion = `${pkg.name} v${pkg.version}`;
 let bannerWidth = 38;
@@ -34,6 +23,18 @@ let banner = `
  ${'https://github.com/iamso/talkso-cli'.dim}
 `;
 console.log(banner);
+
+const sh = require("shelljs");
+const cwd = sh.pwd().toString();
+const path = require('path');
+const fs = require('fs');
+const globule = require('globule');
+const argv = require('optimist').argv;
+const opn = require('opn');
+const { mdRegex, processFiles, clearTemp } = require('./lib/process');
+const serve = require('./lib/serve');
+const { runScript } = require('./lib/utils');
+let aborted = false;
 
 if (hasOption('help')) {
   console.log(`${'usage:'.yellow}

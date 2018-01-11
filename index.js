@@ -62,16 +62,16 @@ if (hasOption('example')) {
 }
 
 const { runScript } = require('./lib/utils');
-const copyClient = () => {
-  fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
-  fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
+const copyClient = overwrite => {
+  (overwrite || !fs.existsSync(`${cwd}/talkso.css`)) && fs.createReadStream(`${__dirname}/client/talkso.css`).pipe(fs.createWriteStream(`${cwd}/talkso.css`));
+  (overwrite || !fs.existsSync(`${cwd}/talkso.js`)) && fs.createReadStream(`${__dirname}/client/talkso.js`).pipe(fs.createWriteStream(`${cwd}/talkso.js`));
 }
 
 if (hasOption('update')) {
   console.log(`start updating cilent`.yellow);
   runScript(`${__dirname}/postinstall.js`).then(e => {
     if (fs.existsSync(`${cwd}/talkso.css`) && fs.existsSync(`${cwd}/talkso.js`)) {
-      copyClient();
+      copyClient(true);
     }
     console.log(`finish updating cilent`.yellow);
   }).catch(console.error);

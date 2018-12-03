@@ -7,6 +7,7 @@ const request = require('./lib/request');
 const files = [
   'https://raw.githubusercontent.com/iamso/talkso/master/talkso.css',
   'https://raw.githubusercontent.com/iamso/talkso/master/talkso.js',
+  'https://raw.githubusercontent.com/iamso/talkso/master/demo.html',
 ];
 const dir = `${__dirname}/client`;
 const dirName = path.basename(dir);

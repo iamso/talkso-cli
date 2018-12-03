@@ -1,6 +1,6 @@
 # talkso-cli
 
-CLI to create **talkso** presentations from markdown files.
+CLI to process **talkso** HTML presentations.
 
 [Read more about talkso](https://github.com/iamso/talkso).
 
@@ -19,11 +19,9 @@ Your system must meet the following requirements:
 
 ## Usage
 
-Create a markdown file, see the [example](example.md) for help.
-
 ### Example
 
-Create an example markdown file, showing all the possible options:
+Create an example HTML file, showing all the possible options:
 
 ```bash
 talkso -e
@@ -32,20 +30,6 @@ talkso --example
 # or
 talkso example
 ```
-
-### Watch
-
-Run the following command from the markdown files directory:
-
-```bash
-talkso -w
-# or
-talkso --watch
-# or
-talkso watch
-```
-
-The watch command copys the necessary css- and js-files to the directory and creates the html file(s). It also starts the server, see [Serve](#serve).
 
 ### Serve
 
@@ -71,29 +55,15 @@ talkso -s --port 7000
 
 If no port is specified, the default port 8000 is used.
 
-*NOTE: The port can also be passed in with the watch command.*
-
 ### Build
 
-Run the following command from the markdown files directory:
+Run the following command from the HTML files directory:
 
 ```bash
 talkso
 ```
 
-The build command copys the necessary css- and js-files to the directory and creates the html file(s). Additionally a PDF with screenshots is created.
-
-#### No PDF
-
-Run the following command to skip the PDF creation:
-
-```bash
-talkso --no-pdf
-# or
-talkso no-pdf
-```
-
-*NOTE: This is a lot faster, since it doesn't have to create all the screenshots.*
+The build command copys the necessary css- and js-files to the directory and creates a PDF with screenshots for each HTML file.
 
 #### Create a Zip
 
@@ -119,9 +89,48 @@ talkso --deploy
 talkso deploy
 ```
 
+### Other Commands
+
+#### Update
+
+Run the following command to update the css- and js-files from the repo:
+
+```bash
+talkso -u
+# or
+talkso --update
+# or
+talkso update
+```
+
+#### Version
+
+Run the following command to check the version of the CLI:
+
+```bash
+talkso -v
+# or
+talkso --version
+# or
+talkso version
+```
+
+#### Help
+
+Run the following command to see the help:
+
+```bash
+talkso -h
+# or
+talkso --help
+# or
+talkso help
+```
+
+
 ## License
 
-Copyright (c) 2017 Steve Ottoz
+Copyright (c) 2018 Steve Ottoz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

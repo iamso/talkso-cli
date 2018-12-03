@@ -35,15 +35,14 @@ if (hasOption('version')) {
 
 if (hasOption('help')) {
   console.log(`${'usage:'.yellow}
-if no argument is passed, it will process the .md files and create HTML output.
+if no argument is passed, it will create a pdf of the html files in the folder.
 
 ${'-e, --example'.bold}   create example.md
 ${'-u, --update'.bold}    update the client files
-${'-w, --watch'.bold}     start watching .md files
 ${'-s, --serve'.bold}     start serving the files
-${'-z, --zip'.bold}       create a zip file ${'(only if not watching or serving)'.dim}
-${'-d, --deploy'.bold}    create folder for deployment ${'(only if not watching or serving)'.dim}
-${'-p, --pdf'.bold}       create pdf from screenshots ${'(only if not watching or serving)'.dim}
+${'-z, --zip'.bold}       create a zip file ${'(only if not serving)'.dim}
+${'-d, --deploy'.bold}    create folder for deployment ${'(only if not serving)'.dim}
+${'-p, --pdf'.bold}       create pdf from screenshots ${'(only if not serving)'.dim}
 ${'-v, --version'.bold}   show the version ot talkso-cli
 ${'-h, --help'.bold}      show this helpful information
 `);
@@ -56,8 +55,8 @@ const path = require('path');
 const fs = require('fs');
 
 if (hasOption('example')) {
-  fs.createReadStream(`${__dirname}/example.md`).pipe(fs.createWriteStream(`${cwd}/example.md`));
-  console.log(`created example.md`.yellow);
+  fs.createReadStream(`${__dirname}/client/demo.html`).pipe(fs.createWriteStream(`${cwd}/example.html`));
+  console.log(`created example.html`.yellow);
   return;
 }
 
@@ -70,9 +69,7 @@ const copyClient = overwrite => {
 if (hasOption('update')) {
   console.log(`start updating cilent`.yellow);
   runScript(`${__dirname}/postinstall.js`).then(e => {
-    if (fs.existsSync(`${cwd}/talkso.css`) && fs.existsSync(`${cwd}/talkso.js`)) {
-      copyClient(true);
-    }
+    copyClient(fs.existsSync(`${cwd}/talkso.css`) && fs.existsSync(`${cwd}/talkso.js`));
     console.log(`finish updating cilent`.yellow);
   }).catch(console.error);
   return;
@@ -80,14 +77,18 @@ if (hasOption('update')) {
 
 const globule = require('globule');
 const opn = require('opn');
-const { mdRegex, processFiles, clearTemp } = require('./lib/process');
+const { processFiles, clearTemp } = require('./lib/process');
 const serve = require('./lib/serve');
 let aborted = false;
 
-const files = globule.find(`${cwd}/*.md`);
+const files = globule.find(`${cwd}/*.+(html|htm)`);
 
 if (files.length) {
   copyClient();
+}
+else {
+  console.log(`no files to process`.yellow);
+  process.exit(0);
 }
 
 process.on('SIGINT', function() {
@@ -101,31 +102,7 @@ process.on('SIGTERM', function() {
 });
 
 (async () => {
-  if (hasOption('watch')) {
-    process.on('exit', function() {
-      if (aborted) {
-        console.log('');
-        console.log(`stop watching files`.yellow);
-      }
-    });
-
-    const {url, port, reloadServer} = await serve(true);
-    console.log(`start watching files`.yellow);
-    console.log(`serving files at ${url}`.yellow.dim);
-    for (let file of files) {
-      await processFiles(file, false);
-    }
-    fs.watch(cwd, async (e, file) => {
-      if (mdRegex.test(file) && !/.*\~\..*/.test(file)) {
-        const mdFile = path.basename(file);
-        console.log(`${mdFile} changed`.yellow);
-        await processFiles(file, false);
-        reloadServer.reload();
-      }
-    });
-    opn(url);
-  }
-  else if (hasOption('serve')) {
+  if (hasOption('serve')) {
     process.on('exit', function() {
       if (aborted) {
         console.log('');
@@ -140,7 +117,7 @@ process.on('SIGTERM', function() {
   else {
     const zip = hasOption('zip');
     const deploy = hasOption('deploy');
-    const pdf = hasOption('pdf');
+    const pdf = true;
     process.on('exit', function() {
       if (aborted) {
         console.log('');

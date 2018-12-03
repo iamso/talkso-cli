@@ -42,7 +42,6 @@ ${'-u, --update'.bold}    update the client files
 ${'-s, --serve'.bold}     start serving the files
 ${'-z, --zip'.bold}       create a zip file ${'(only if not serving)'.dim}
 ${'-d, --deploy'.bold}    create folder for deployment ${'(only if not serving)'.dim}
-${'-p, --pdf'.bold}       create pdf from screenshots ${'(only if not serving)'.dim}
 ${'-v, --version'.bold}   show the version ot talkso-cli
 ${'-h, --help'.bold}      show this helpful information
 `);
